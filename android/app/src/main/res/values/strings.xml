@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Ventas la Salsoa Foráneo</string>
+    <string name="title_activity_main">Ventas la Salsoa Foráneo</string>
+    <string name="package_name">com.salsoaforaneo.app</string>
+    <string name="custom_url_scheme">com.salsoaforaneo.app</string>
+</resources>
