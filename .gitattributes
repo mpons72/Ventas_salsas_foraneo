@@ -1,0 +1,13 @@
+# Normaliza los saltos de línea: Git siempre guarda LF internamente,
+# y los convierte a CRLF solo al hacer checkout en Windows. Esto evita
+# los warnings de "LF will be replaced by CRLF" y los diffs ruidosos.
+* text=auto eol=lf
+
+# Binarios: nunca tocar saltos de línea
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.jar binary
+*.keystore binary
+*.apk binary
