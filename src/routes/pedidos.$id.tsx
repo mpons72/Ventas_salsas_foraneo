@@ -57,6 +57,21 @@ function PedidoDetail() {
   const client = clients.find((c) => c.id === order.clientId);
   const t = orderTotals(order, products);
 
+  const totalsByProduct = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const b of order.boxes) {
+      for (const it of b.items) {
+        if (it.pieces > 0) {
+          map.set(it.productId, (map.get(it.productId) ?? 0) + it.pieces);
+        }
+      }
+    }
+    // Mantiene el orden del catálogo de productos para que la lista no "baile".
+    return products
+      .map((p) => ({ product: p, pieces: map.get(p.id) ?? 0 }))
+      .filter((x) => x.pieces > 0);
+  }, [order.boxes, products]);
+
   return (
     <AppShell>
       <div className="mb-4 space-y-2">
@@ -268,6 +283,30 @@ function PedidoDetail() {
           );
         })}
       </div>
+
+      {/* Resumen por sabor/producto: piezas totales sumando todas las cajas */}
+      {totalsByProduct.length > 0 && (
+        <>
+          <SectionHeader
+            icon={<Box className="size-4" />}
+            title="Total por sabor en este pedido"
+          />
+          <Card className="mb-4">
+            <CardContent className="p-3 space-y-1.5">
+              {totalsByProduct.map(({ product, pieces }) => (
+                <div key={product.id} className="flex items-center justify-between text-sm">
+                  <span className="truncate">{product.name}</span>
+                  <span className="font-semibold shrink-0 pl-2">{pieces} pzs</span>
+                </div>
+              ))}
+              <div className="border-t pt-1.5 mt-1.5 flex items-center justify-between text-sm font-bold">
+                <span>Total</span>
+                <span>{t.totalPieces} pzs</span>
+              </div>
+            </CardContent>
+          </Card>
+        </>
+      )}
 
       {/* Extras */}
       <SectionHeader
